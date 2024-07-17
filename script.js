@@ -85,7 +85,7 @@ buttonEl.addEventListener("click", async () => {
       }
       errorEl.textContent = "";
     const response = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${inputEL.value.trim()}&limit=1&appid=${apiKey}`
+      `https://api.openweathermap.org/geo/1.0/direct?q=${inputEL.value.trim()}&limit=1&appid=${apiKey}`
     );
     const data = await response.json();
     const lon = data[0].lon;
