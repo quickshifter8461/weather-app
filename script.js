@@ -119,6 +119,7 @@ async function fetchWeatherData(lat, lon) {
 
 
 buttonEl.addEventListener("click", async () => {
+    resultEl.textContent =""
   try {
     let cityName = inputEL.value.trim();
     if (cityName === "") {
