@@ -1,0 +1,32 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    min-height: 100vh;
+    background-color: #212529;
+    color: #fff;
+    font-family: sans-serif;
+    padding: 0;
+}
+main{
+    padding-top: 1rem;
+    gap: 10px;
+}
+.nav{
+    background-color: #3c096c;
+}
+.logo{
+    color: #fff;
+}
+
+.card{
+    background-color: #3c096c;
+    color: #fff;
+}
+.current-weather{
+    background-color: #2b2d42;
+}
+
