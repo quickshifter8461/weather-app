@@ -26,6 +26,14 @@ const feelsLikeEl = document.getElementById("feels-like");
 const humidityEl = document.getElementById("humidity");
 const pressureEl = document.getElementById("pressure");
 const visibilityEl = document.getElementById("visibility");
+const titleEL = document.getElementById("current-title")
+const windSpeedEl = document.getElementById("wind-speed")
+const windDirectionEl = document.getElementById("wind-direction")
+const windGustEl =document.getElementById("wind-gust")
+const populationEl = document.getElementById("population")
+const cityLatitudeEL = document.getElementById('latitude')
+const cityLongitudeEl = document.getElementById('longitude')
+const currentCityNameEl =document.getElementById("current-city-name")
 let latitude, longitude;
 
 dateEl.textContent = `${weekdayName} - ${date}`;
@@ -46,13 +54,13 @@ function getLocation() {
   function showError(error) {
     switch(error.code) {
       case error.PERMISSION_DENIED:
-        console.log("User denied the request for Geolocation.");
+        console.log("Geolocation request denied.");
         break;
       case error.POSITION_UNAVAILABLE:
-        console.log("Location information is unavailable.");
+        console.log("Location unavailable.");
         break;
       case error.TIMEOUT:
-        console.log("The request to get user location timed out.");
+        console.log("The request timed out.");
         break;
       case error.UNKNOWN_ERROR:
         console.log("An unknown error occurred.");
@@ -61,6 +69,11 @@ function getLocation() {
   }
 }
 getLocation();
+function getWindDirection(degree) {
+    const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+    const index = Math.round(degree / 45) % 8;
+    return directions[index];
+  }
 
 async function fetchWeatherData(lat, lon) {
   try {
@@ -76,6 +89,7 @@ async function fetchWeatherData(lat, lon) {
     for (i = 0; i < data.list.length; i++) {
       maxTempDay.push(Math.floor(data.list[i].main.temp_max));
     }
+    titleEL.innerHTML =`Today's Weather In ${data.city.name}`
     locationEl.innerHTML = `${data.city.name}`;
     temp.innerHTML = `${Math.floor(data.list[0].main.temp)}°c`;
     weatherDes.innerHTML = `${data.list[0].weather[0].description}`;
@@ -85,6 +99,13 @@ async function fetchWeatherData(lat, lon) {
     humidityEl.innerHTML = `${data.list[0].main.humidity}%`;
     pressureEl.innerHTML = `${data.list[0].main.pressure}mb`;
     visibilityEl.innerHTML = `${Math.floor(data.list[0].visibility / 1000)}Km`;
+    windSpeedEl.innerHTML = `Wind Speed: ${Math.floor((data.list[0].wind.speed)*3.6)} km/h`
+    windDirectionEl.innerHTML =`Wind Direction: ${getWindDirection(data.list[0].wind.deg)}`
+    windGustEl.innerHTML =`Wind Gust: ${Math.floor((data.list[0].wind.gust)*3.6)} km/h`
+    populationEl.innerHTML =`Population: ${data.city.population}`
+    currentCityNameEl.innerHTML=`${data.city.name}`
+    cityLatitudeEL.innerHTML = `Latitude: ${data.city.coord.lat}°N`
+    cityLongitudeEl.innerHTML = `Longitude: ${data.city.coord.lon}°E`
     icon.setAttribute(
       "src",
       `https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}@4x.png`
@@ -118,4 +139,5 @@ buttonEl.addEventListener("click", async () => {
     resultEl.textContent = "Error fetching data";
     console.log("Fetch city data error:", err);
   }
+  inputEL.value=''
 });
